@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-3">
+      <div class="position-fixed">
+        <div class="list-group list-group-flush">
+          {% if User is defined %}
+
+          <a href="#" class="list-group-item list-group-item-action">
+            <h5 style="font-size:18px;text-align: left;color: black;">
+            <div class="row">
+            <div class="col-sm-3">
+            <img src="{{ asset(User.getPicture()) }}" alt="avatar image" width="50" height="50" class="rounded-circle"/></div>
+            <div class="col-sm-9"><strong> {{ User.fullname }}
+            <br><small class="text-muted">{{ User.username }}</small> </strong></div>
+            </div></h5>
+          </a>
+          <a href="{{ path('home') }}" class="list-group-item list-group-item-action ">
+          <h5 style="color: black;"><i class="fa fa-home"></i> Home</h5>
+          </a>
+          <a href="" class="list-group-item list-group-item-action ">
+          <h5 style="color: black;"> <i class="fa fa-hourglass-1"></i>&nbsp My bookings</h5>
+          </a>
+          <a href="{{ path('logout') }}" class="list-group-item list-group-item-action ">
+          <h5 style="color: black;"> <i class="fa fa-sign-out"></i>&nbsp Logout</h5>
+          </a>
+          {% else %}
+          <a href="{{ path('login') }}" class="list-group-item list-group-item-action ">
+          <h5 style="color: black;"> <i class="fa fa-user"></i>&nbsp Login</h5>
+          </a>
+          <a href="{{ path('register') }}" class="list-group-item list-group-item-action ">
+          <h5 style="color: black;"> <i class="fa fa-sign-in"></i>&nbsp Create Account</h5>
+          </a>
+          {% endif %}
+
+        </div>
+        <p class="text-muted text-center">&copy; 2020 Air tickets online</p>
+    </div>
+    
+
+    </div>
+
+    <div class="col-sm-9">
+
+{% if SuccessNotification is defined %}
+    <div class="alert alert-dismissible alert-success">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong></strong> {{ SuccessNotification }}
+  </div>
+{% endif %}
+    
+
+{% if empty %}
+    <div class="card shadow">
+    {% for flight in User.getFlights() %}
+    <div class="card-header">
+
+    <div class="row">
+    <div class="col-sm-11">{{ flight.source }} to {{ flight.destination }}</div>
+    <div class="col-sm-1">
+    <a href="" class="btn btn-primary btn-sm zoooo" data-id="{{ flight.id }}" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></a>
+    </div>
+    </div>
+
+    </div>
+    {% endfor %}
+    </div>
+{% endif %}
+
+    <script>
+    $(document).on("click", ".zoooo", function () {
+     var myBookId = $(this).data('id');
+     var strLink = "/cancel/" + myBookId;
+     document.getElementById("linku").setAttribute("href",strLink);
+    });
+    </script>
+
+    <div class="modal fade" id="deleteModal" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+           <h5 class="modal-title">Do you want to cancel the flight ?</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+           </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure ?</p>
+          </div>
+          <div class="modal-footer">
+           <a class="btn btn-primary" id="linku">Cancel flight</a>
+           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+  </div>
+</div>
+
+
+    
+
+
+
+    </div>
+
+{% endblock %}

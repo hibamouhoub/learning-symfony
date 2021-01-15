@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br><br><br>
+    <div class="row">
+	<div class="col-md-3"></div>
+	<div class="col-md-6">
+	<div class="card card-body">
+	<h2 class="text-center mb-3"><i class="fa fa-sign-in"></i> Login</h2><hr>
+
+    {% if Error %}
+    <div class="alert alert-dismissible alert-primary">
+  		<button type="button" class="close" data-dismiss="alert">&times;</button>
+  		<strong>Oh snap!</strong> {{ Error.messageKey }}
+	</div>
+	{% endif %}
+
+		<form action="{{path('login')}}" method="POST">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="_username" class="form-control" placeholder="Enter username"/>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="_password" class="form-control" placeholder="Enter Password"/>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Login</button>
+       </form>
+		
+            <p class="lead mt-4 text-center">
+            No account? <a href="{{ path('register') }}">Regsiter</a>
+            </p>
+		
+		</div>
+	</div>
+	<div class="col-md-3"></div>
+</div>
+
+
+<br><br><br><br>
+<p class="text-muted text-center">&copy; 2020 Air tickets online</p>
+{% endblock %}

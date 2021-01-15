@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+
+
+<div class="row">
+    <div class="col-sm-3">
+      <div class="position-fixed">
+        <div class="list-group list-group-flush">
+
+          <a href="#" class="list-group-item list-group-item-action">
+            <h5 style="font-size:18px;text-align: left;color: black;">
+            <div class="row">
+            <div class="col-sm-3">
+            <img src="{{ asset(User.getPicture()) }}" alt="avatar image" width="50" height="50" class="rounded-circle"/></div>
+            <div class="col-sm-9"><strong> {{ User.fullname }}
+            <br><small class="text-muted">{{ User.username }}</small> </strong></div>
+            </div></h5>
+          </a>
+          <a href="{{ path('home') }}" class="list-group-item list-group-item-action ">
+          <h5 style="color: black;"><i class="fa fa-home"></i> Home</h5>
+          </a>
+          <a href="{{ path('bookings') }}" class="list-group-item list-group-item-action ">
+          <h5 style="color: black;"> <i class="fa fa-hourglass-1"></i>&nbsp My bookings</h5>
+          </a>
+          <a href="{{ path('logout') }}" class="list-group-item list-group-item-action ">
+          <h5 style="color: black;"> <i class="fa fa-sign-out"></i>&nbsp Logout</h5>
+          </a>
+
+        </div>
+        <p class="text-muted text-center">&copy; 2020 Air tickets online</p>
+    </div>
+    
+
+    </div>
+
+    <div class="col-sm-1"></div>
+    <div class="col-sm-6">
+    
+
+<br><br>
+{% if SuccessNotification is defined %}
+    <div class="alert alert-dismissible alert-success">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong></strong> {{ SuccessNotification }}
+  </div>
+  {% endif %}
+
+{% if flight %}
+<div class="card mb-3 shadow">
+  <h4 class="card-header text-center">
+  <div class="row no-gutters">
+    <div class="col-md-3 img-hover-zoom rounded-pill">
+      <img  width="100" height="100" src="{{ asset(flight.getPicture()) }}" class="rounded-circle" alt="...">
+    </div>
+    <div class="col-md-9" style="text-align: right;">
+  {{ flight.source }} to {{ flight.destination }}
+  <br><small class="muted-text" id="demo"></small></div></h4>
+              <script>
+                
+
+                var x = setInterval(function() {
+                var countDownDate = new Date('{{ flight.getDepartureAt() }}').getTime();
+                var now = new Date().getTime();
+                var distance = countDownDate - now;
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("demo").innerHTML = "Departure in "+days + "d " + hours + "h "+ minutes + "m " + seconds + "s ";
+                }, 1000);
+              </script>
+
+
+ 
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item text-muted"><h5>Airline: {{ flight.airline }}</h5></li>
+      <li class="list-group-item text-muted"><h5>Source: {{ flight.source }}</h5></li>
+      <li class="list-group-item text-muted"><h5>Destination: {{ flight.destination }}</h5></li>
+      <li class="list-group-item text-muted"><h5>Departure: {{ flight.getDepartureAt() }}</h5></li>
+      <li class="list-group-item text-muted"><h5>Arrival: {{ flight.getArrivalAt() }}</h5></li>
+      <li class="list-group-item text-muted"><h5>Price: {{ flight.price }} €</h5></li>
+    </ul>
+
+    {% if booked %}
+    <a href="" class="btn btn-primary btn-block btn-lg disabled">Already booked</a>
+    {% else %}
+    <a href="/book/{{ flight.id }}" class="btn btn-primary btn-block btn-lg">Book this flight</a>
+    {% endif %}
+  </div>
+ </div>
+ {% endif %}
+
+{% endblock %}
